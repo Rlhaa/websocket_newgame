@@ -6,6 +6,22 @@ class Score {
   stageChange = true;
   currentStage = 1000; // 현재 스테이지 초기값 설정
 
+  stageAsset = {
+    name: 'stage',
+    version: '1.0.0',
+    data: [
+      { id: 1000, score: 0, scorePerSecond: 1 },
+      { id: 1001, score: 200, scorePerSecond: 2 },
+      { id: 1002, score: 400, scorePerSecond: 4 },
+      { id: 1003, score: 600, scorePerSecond: 4 },
+      { id: 1004, score: 800, scorePerSecond: 6 },
+      { id: 1005, score: 1000, scorePerSecond: 6 },
+      { id: 1006, score: 1200, scorePerSecond: 8 },
+      { id: 1007, score: 1400, scorePerSecond: 8 },
+      { id: 1008, score: 1600, scorePerSecond: 10 },
+    ],
+  };
+
   constructor(ctx, scaleRatio) {
     this.ctx = ctx;
     this.canvas = ctx.canvas;
@@ -13,27 +29,51 @@ class Score {
   }
 
   update(deltaTime) {
-    this.score += deltaTime * 0.01;
+    const currentStageData = this.stageAsset.data.find((stage) => stage.id === this.currentStage);
+    const scorePerSecond = (currentStageData && currentStageData.scorePerSecond) || 0;
+    const goalScore = (currentStageData && currentStageData.score) || 0; // 현재 스테이지의 도달 점수
 
-    // 스코어가 100의 배수일 때, stageChange가 true인 경우 이벤트 전송
-    if (Math.floor(this.score) % 100 === 0 && this.stageChange) {
+    // 점수 증가
+    this.score += scorePerSecond * (deltaTime / 2000); // deltaTime을 초 단위로 변환하여 점수 증가
+
+    // 스코어가 현재 스테이지의 도달 점수를 초과할 때 이벤트 전송
+    if (Math.floor(this.score) >= goalScore && this.stageChange) {
       this.stageChange = false; // 중복 전송 방지
+      console.log('Current Stage before sending:', this.currentStage);
       sendEvent(11, { currentStage: this.currentStage, targetStage: this.currentStage + 1 });
-      this.currentStage += 1; // 스테이지 업데이트
+      this.currentStage += 1;
     }
 
-    // 스코어가 100을 초과하고 stageChange가 false일 때 다시 true로 설정
-    if (Math.floor(this.score) % 100 !== 0) {
+    // 스코어가 도달 점수를 초과하면 stageChange를 true로 설정
+    if (Math.floor(this.score) < goalScore) {
       this.stageChange = true; // 다음 스테이지 이벤트를 가능하게 함
     }
   }
-
   getItem(itemId) {
-    this.score += 10;
+    console.log(itemId);
+    const newItemId = String(itemId);
+    switch (newItemId) {
+      case '1':
+        this.score += 10;
+        break;
+      case '2':
+        this.score += 20;
+        break;
+      case '3':
+        this.score += 30;
+        break;
+      case '4':
+        this.score += 40;
+        break;
+      default:
+        console.log('알 수 없는 아이템입니다.');
+    }
+    sendEvent(4, { itemId: newItemId });
   }
 
   reset() {
     this.score = 0;
+    this.currentStage = 1000;
   }
 
   setHighScore() {

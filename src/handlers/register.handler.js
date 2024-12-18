@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { addUser } from '../models/user.model.js';
+import { addUser, addUserItems } from '../models/user.model.js';
 import { handleConnection, handleDisconnect, handleEvent } from './helper.js';
 
 const registerHandler = (io) => {
@@ -7,7 +7,13 @@ const registerHandler = (io) => {
     // 최초 커넥션을 맺은 이후 발생하는 각종 이벤트를 처리하는 곳
 
     const userUUID = uuidv4(); // UUID 생성
-    addUser({ uuid: userUUID, socketId: socket.id }); // 사용자 추가
+    addUser({ uuid: userUUID, socketId: socket.id, items: {} }); // 사용자 추가
+
+    // 일부러 테스트로 유저가 생성되면 바로 아이템 1개 넣어본다.
+    // addUserItems(socket.id, 1);
+    // addUserItems(socket.id, 1);
+    // addUserItems(socket.id, 1);
+    // addUserItems(socket.id, 2);
 
     handleConnection(socket, userUUID);
 

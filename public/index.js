@@ -164,9 +164,10 @@ function reset() {
   gameover = false;
   waitingToStart = false;
 
+  score.reset();
+
   ground.reset();
   cactiController.reset();
-  score.reset();
   gameSpeed = GAME_SPEED_START;
   sendEvent(2, { timestamp: Date.now() });
 }
