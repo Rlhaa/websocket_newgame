@@ -29,9 +29,10 @@ class Score {
   }
 
   update(deltaTime) {
+    //
     const currentStageData = this.stageAsset.data.find((stage) => stage.id === this.currentStage);
-    const scorePerSecond = (currentStageData && currentStageData.scorePerSecond) || 0;
-    const goalScore = (currentStageData && currentStageData.score) || 0; // 현재 스테이지의 도달 점수
+    const scorePerSecond = currentStageData ? currentStageData.scorePerSecond : 0;
+    const goalScore = currentStageData ? currentStageData.score : 0;
 
     // 점수 증가
     this.score += scorePerSecond * (deltaTime / 2000); // deltaTime을 초 단위로 변환하여 점수 증가

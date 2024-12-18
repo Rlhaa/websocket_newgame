@@ -58,7 +58,7 @@ let hasAddedEventListenersForRestart = false;
 let waitingToStart = true;
 // 현재 스테이지 및 최대 스테이지 ID
 let currentStageId = 1000; // 초기 스테이지 ID
-const maxStageId = 1006; // 최대 스테이지 ID
+const maxStageId = 1008; // 최대 스테이지 ID
 
 function createSprites() {
   // 비율에 맞는 크기
@@ -207,7 +207,7 @@ function gameLoop(currentTime) {
     ground.update(gameSpeed, deltaTime);
     // 선인장
     cactiController.update(gameSpeed, deltaTime);
-    itemController.update(gameSpeed, deltaTime);
+    itemController.update(gameSpeed, deltaTime, currentStageId); // currentStageId 전달
     // 달리기
     player.update(gameSpeed, deltaTime);
     updateGameSpeed(deltaTime);

@@ -16,10 +16,10 @@ export const getItem = (uuid, payload) => {
     }
 
     // 들어온 아이템 id가 에셋에 있는지 확인
-    let itemExists = false; // 아이템 존재 여부 플래그 초기화
+    let existItem = false; // 아이템 존재 여부 플래그 초기화
     for (let i = 0; i < items.data.length; i++) {
       if (items.data[i].id === itemId) {
-        itemExists = true; // 아이템이 존재하면 플래그를 true로 설정
+        existItem = true; // 아이템이 존재하면 플래그를 true로 설정
         break; // 아이템을 찾았으므로 루프 종료
       }
     }
