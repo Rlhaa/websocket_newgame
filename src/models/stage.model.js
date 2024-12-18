@@ -17,4 +17,3 @@ export const setStage = (uuid, id) => {
 export const clearStage = (uuid) => {
   return (stages[uuid] = []);
 };
-
