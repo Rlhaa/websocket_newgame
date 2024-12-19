@@ -51,25 +51,31 @@ class Score {
     }
   }
   getItem(itemId) {
-    console.log(itemId);
-    const newItemId = String(itemId);
-    switch (newItemId) {
-      case '1':
-        this.score += 10;
+    let points = 0; // 아이템에 따른 점수를 저장할 변수
+
+    // 아이템 ID에 따라 점수를 설정
+    switch (itemId) {
+      case 1:
+        points = 10; // 아이템 1의 점수
         break;
-      case '2':
-        this.score += 20;
+      case 2:
+        points = 20; // 아이템 2의 점수
         break;
-      case '3':
-        this.score += 30;
+      case 3:
+        points = 30; // 아이템 3의 점수
         break;
-      case '4':
-        this.score += 40;
+      case 4:
+        points = 40; // 아이템 4의 점수
         break;
       default:
         console.log('알 수 없는 아이템입니다.');
+        return; // 알 수 없는 아이템일 경우 함수 종료
     }
-    sendEvent(4, { itemId: newItemId });
+
+    // 현재 점수에 획득한 점수를 추가
+    this.score += points;
+
+    sendEvent(4, { itemId, itemPoint: points, currentStage: this.currentStage - 1 });
   }
 
   reset() {
